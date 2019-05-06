@@ -42,7 +42,7 @@ class Query {
   fetch(method, data) {
     var par = this;
     var headers = {};
-    if(Cookies && Cookies.get('token')) {
+    if(typeof Cookies != 'undefined' && Cookies.get('token')) {
       headers.Authorization = 'Bearer '+Cookies.get('token');
     }
     if(!method) {

@@ -50,7 +50,9 @@ $('body').on('submit','form.ajax', function(e) {
   var q = new Query(url, pushData);
   q.on('fail', function(e) {
     form.trigger('fail', e);
+    var res = e.detail.event;
     var error = res.responseJSON ? res.responseJSON.error : 'An error has ocurred';
+    var formError = form.find('.form-error');
     if(formError) {
       clearTimeout( formError.data('timer') );
       if(formError.hasClass('form-error-slide')) {
