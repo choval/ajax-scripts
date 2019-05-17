@@ -2,10 +2,11 @@
 
 class Query {
 
-  constructor(path, data, frequency) {
+  constructor(path, data, headers, frequency) {
     this.event_target = new EventTarget;
     this.path = path;
     this.data = data;
+    this.headers = headers;
     this.events = {};
     this.frequency = frequency;
     this.response = false;
@@ -41,10 +42,6 @@ class Query {
 
   fetch(method, data) {
     var par = this;
-    var headers = {};
-    if(typeof Cookies != 'undefined' && Cookies.get('token')) {
-      headers.Authorization = 'Bearer '+Cookies.get('token');
-    }
     if(!method) {
       method = 'GET';
     }
@@ -55,7 +52,7 @@ class Query {
       var opts = {
         method: method,
         url: par.path,
-        headers: headers,
+        headers: par.headers,
         data: data,
         cache: false,
         contentType: false,
@@ -65,7 +62,7 @@ class Query {
       var opts = {
         method: method,
         url: par.path,
-        headers: headers,
+        headers: par.headers,
         data: data,
         cache: false,
       };
