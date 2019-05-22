@@ -52,6 +52,9 @@ $('body').on('submit','form.ajax', function(e) {
     form.trigger('fail', e);
     var res = e.detail.event;
     var error = res.responseJSON ? res.responseJSON.error : 'An error has ocurred';
+    if(typeof error == 'object') {
+      error = error.message;  
+    }
     var formError = form.find('.form-error');
     if(formError) {
       clearTimeout( formError.data('timer') );

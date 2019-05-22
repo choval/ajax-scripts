@@ -25,7 +25,7 @@ $(function() {
       }
       var source_key = table.attr('data-source-key');
       if(!source_key) {
-        source_key = '_rows';
+        source_key = 'rows';
       }
 
       var table_id = table.attr('id');
@@ -43,10 +43,10 @@ $(function() {
 
       var request = {};
       // TODO: Filter
-      request._page = page;
-      request._limit = limit;
-      request._filter = {};
-      request._match = match;
+      request.page = page;
+      request.limit = limit;
+      request.filter = {};
+      request.match = match;
       var q = new Query( source, request );
 
       if( table.data('template') ) {
@@ -84,8 +84,17 @@ $(function() {
         loading.hide();
         var response = e.detail.response;
         table.data('response', response);
-        if( response[source_key].length ) {
-          for(var row of response[source_key]) {
+        var source_keys = source_key.split('.');
+        var data = response;
+        while(source_keys.length) {
+          var k = source_keys.shift();
+          if(typeof data[k] == 'undefined') {
+            break;
+          }
+          data = data[k];
+        }
+        if(data.length) {
+          for(var row of data) {
             var tmp = template;
             for(var field of fields) {
               tmp = tmp.replace( field.tag, eval( field.value ) );
@@ -118,7 +127,7 @@ $(function() {
 
       // Run
       table.data('timer', setTimeout(function() {
-        q.fetch('POST');
+        q.fetch('GET');
       }, 200));
 
       return q;
