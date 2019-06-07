@@ -23,11 +23,6 @@ class Query {
     }
   }
 
-
-  bgpause(val) {
-    this.bgpause = val;
-  }
-
   pause() {
     clearInterval( this.timer );
   }
