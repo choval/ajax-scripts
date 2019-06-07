@@ -10,9 +10,10 @@ class Query {
     this.events = {};
     this.frequency = frequency;
     this.response = false;
+    this.bgpause = true;
 
     var par = this;
-    if(frequency) {
+    if(frequency && bgpause) {
       $(window).blur(function() {
         par.pause();
       });
@@ -21,6 +22,8 @@ class Query {
       });
     }
   }
+
+
 
   pause() {
     clearInterval( this.timer );
