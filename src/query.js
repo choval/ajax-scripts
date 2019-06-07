@@ -57,6 +57,9 @@ class Query {
         cache: false,
         contentType: false,
         processData: false,
+        xhrFields: {
+          withCredentials: true
+        },
       };
     } else {
       var opts = {
@@ -65,6 +68,9 @@ class Query {
         headers: par.headers,
         data: data,
         cache: false,
+        xhrFields: {
+          withCredentials: true
+        },
       };
     }
     $.ajax(opts)
