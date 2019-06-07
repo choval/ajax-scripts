@@ -13,7 +13,7 @@ class Query {
     this.bgpause = true;
 
     var par = this;
-    if(frequency && bgpause) {
+    if(this.frequency && this.bgpause) {
       $(window).blur(function() {
         par.pause();
       });
