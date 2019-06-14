@@ -13,14 +13,26 @@ class Query {
     this.bgpause = true;
 
     var par = this;
-    if(this.frequency && this.bgpause) {
-      $(window).blur(function() {
+    $(window).blur(function() {
+      if(this.frequency && this.bgpause) {
         par.pause();
-      });
-      $(window).focus(function() {
+        console.log('pausing because of blurring');
+      }
+    });
+    $(window).focus(function() {
+      if(this.frequency && this.bgpause) {
         par.resume();
-      });
-    }
+      }
+    });
+  }
+
+  stop() {
+    clearInterval( this.timer );
+    this.frequency = false;
+  }
+
+  keepInBackground( val ) {
+    this.bgpause = !(val);
   }
 
   pause() {
