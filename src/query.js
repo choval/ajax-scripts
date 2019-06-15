@@ -1,9 +1,17 @@
 
 
+function QueryEventTarget(){
+    var target = document.createTextNode(null);
+    this.addEventListener = target.addEventListener.bind(target);
+    this.removeEventListener = target.removeEventListener.bind(target);
+    this.dispatchEvent = target.dispatchEvent.bind(target);
+}
+QueryEventTarget.prototype = EventTarget.prototype;
+
 class Query {
 
   constructor(path, data, headers, frequency) {
-    this.event_target = new EventTarget;
+    this.event_target = new QueryEventTarget;
     this.path = path;
     this.data = data;
     this.headers = headers;
