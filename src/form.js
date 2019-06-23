@@ -24,10 +24,10 @@ $('body').on('submit','form.ajax', function(e) {
   // Form keys
   var formData = form.serializeArray();
   var pushData = new FormData;
-  for(row of formData) {
+  formData.each(function(e, row) {
     pushData.append( row.name, row.value );
     // pushData[ row.name ] = row.value;
-  }
+  });
   // Form files
   var file_inputs = form.find('input[type="file"][name]');
   file_inputs.each(function(pos, file_input) {

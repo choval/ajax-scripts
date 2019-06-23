@@ -1,4 +1,3 @@
-
 'use strict';
 
 $(function() {
@@ -28,25 +27,84 @@ $(function() {
         source_key = 'rows';
       }
 
-      var table_id = table.attr('id');
+      var id = table.attr('id');
+
       var match = '';
-      if(table_id) {
-        var match_field = $('[name="match"][data-target="#'+table_id+'"]');
-        if(match_field.length) {
-          match = match_field.val();
-          match_field.off('keyup');
-          match_field.on('keyup', function(e) {
-            table.ajaxTable();
-          });
-        }
+      var match_field = table.find('.match');
+      if(!match_field.length && id) {
+        match_field = $('.match[data-target="#'+id+'"]');
+      }
+      if(match_field.length) {
+        match = match_field.val();
       }
 
+      var sort = {};
+      table.find('.sort[name]').each(function(e, obj) {
+        var $obj = $(obj);
+        var name = $obj.attr("name");
+        var way = $obj.attr('data-sort');
+        if(!way) {
+          way = 1;
+        } else {
+          way = parseInt(way);
+        }
+        sort[name] = way;
+      });
+
+      var filter = {};
+      table.find('.filter[name]').each(function(e, obj) {
+        var $obj = $(obj);
+        var name = $obj.attr("name");
+        var val = $obj.val();
+        if(val) {
+          val = val.trim();
+        }
+        var type = obj.tagName;
+        var like = $obj.hasClass('filter-like');
+        var contains = $obj.hasClass('doxa-filter-contains');
+        var subtype = $obj.attr('type');
+        if(subtype) {
+          subtype = subtype.toUpperCase();
+        }
+        if(val && val.length) {
+          if(name.substr(-2) == "[]") {
+            name = name.substr(0,name.length-2);
+            if(typeof filter[name] == "undefined") {
+              filter[name] = [];
+            }
+            if(type == 'SELECT' || !like ) {
+              filter[name].push(val);
+            } else if(type == 'INPUT' && ( subtype == 'CHECKBOX' || subtype == 'RADIO' ) ) {
+              if($obj.is(':checked')) {
+                filter[name].push(val);
+              }
+            } else if(contains) {
+              filter[name].push({'LIKE': '%'+val+'%'});
+            } else {
+              filter[name].push({'LIKE': val});
+            }
+          } else {
+            if(type == 'SELECT' || !like ) {
+              filter[name] = val;
+            } else if(type == 'INPUT' && ( subtype == 'CHECKBOX' || subtype == 'RADIO' ) ) {
+              if($obj.is(':checked')) {
+                filter[name] = val;
+              }
+            } else if(contains) {
+              filter[name] = {'LIKE': '%'+val+'%'};
+            } else {
+              filter[name] = {'LIKE': val};
+            }
+          }
+        }
+      });
+
       var request = {};
-      // TODO: Filter
       request.page = page;
       request.limit = limit;
-      request.filter = {};
+      request.filter = filter;
       request.match = match;
+      request.sort = sort;
       var q = new Query( source, request );
 
       if( table.data('template') ) {
@@ -56,10 +114,15 @@ $(function() {
         table.data('template', template);
       }
 
-      var template_fields = template.match(/\[\[(.+)\]\]/g);
-      if(!template_fields) {
-        template_fields = [];
-        // return;
+      if(template) {
+        var template_fields = template.match(/\[\[(.+)\]\]/g);
+        if(!template_fields) {
+          template_fields = [];
+          /**
+           * [2019-06-22] Osvaldo:
+           * TODO: If there is no template, finish
+           */
+        }
       }
 
       var fields = [];
@@ -73,7 +136,10 @@ $(function() {
           tag: field
         });
       }
-      var tbody = table.find('tbody').last();
+      var tbody = table.find('tbody.content, div.content');
+      if(!tbody.length) {
+        tbody = table.find('tbody').last();
+      }
 
       empty.hide();
       loading.show();
@@ -139,34 +205,55 @@ $(function() {
 
 $(function() {
 
-  // Bind to talbe.ajax
-  $('table.ajax[data-source]').ajaxTable();
+  // Bind to table.ajax
 
-  $('table.ajax[data-source] .next-page').on('click', function(e) {
-    var $table = $(this).closest('.ajax');
-    var page = $table.attr('data-page');
-    if(!page) {
-      page = 1;
+  $('table.ajax[data-source],div.ajax[data-source]').each(function(e,obj) {
+    var $obj = $(obj);
+    $obj.ajaxTable();
+    
+    $obj.find('.next-page').off('click');
+    $obj.find('.prev-page').off('click');
+    $obj.find('.filter').off('keyup change');
+
+    $obj.find('.next-page').on('click', function(e) {
+      var $table = $obj;
+      var page = $table.attr('data-page');
+      if(!page) {
+        page = 1;
+      }
+      var response = $table.data('response');
+      var max_pages = Math.ceil( response._total / response._limit );
+      if(response._page < max_pages) {
+        page++;
+        $table.attr('data-page', page);
+        $table.ajaxTable();
+      }
+    });
+
+    $obj.find('.prev-page').on('click', function(e) {
+      var $table = $obj;
+      var page = $table.attr('data-page');
+      if(!page) {
+        page = 1;
+      }
+      page--;
+      if(page > 0) {
+        $table.attr('data-page', page);
+        $table.ajaxTable();
+      }
+    });
+
+    var filter_timeout = $obj.attr('data-filter-timeout');
+    if(!filter_timeout) {
+      filter_timeout = 300;
     }
-    var response = $table.data('response');
-    var max_pages = Math.ceil( response._total / response._limit );
-    if(response._page < max_pages) {
-      page++;
-      $table.attr('data-page', page);
-      $table.ajaxTable();
-    }
-  });
-  $('table.ajax[data-source] .prev-page').on('click', function(e) {
-    var $table = $(this).closest('.ajax');
-    var page = $table.attr('data-page');
-    if(!page) {
-      page = 1;
-    }
-    page--;
-    if(page > 0) {
-      $table.attr('data-page', page);
-      $table.ajaxTable();
-    }
+    $obj.find('.filter').on('keyup change', function(e) {
+      clearTimeout($obj.data('keytimer'));
+      $obj.data('keytimer', setTimeout(function() {
+        obj.ajaxTable();
+      }, filter_timeout) );
+    });
+
   });
 
 });
