@@ -30,7 +30,7 @@ $('body').on('submit','form.ajax', function(e) {
   });
   // Form files
   var file_inputs = form.find('input[type="file"][name]');
-  file_inputs.forEach(function(pos, file_input) {
+  file_inputs.each(function(pos, file_input) {
     var name = $(file_input).attr('name');
     pushData.append( name, file_input.files[0] );
   });
