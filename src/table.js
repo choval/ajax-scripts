@@ -18,6 +18,8 @@ $(function() {
       if(!page) {
         page = 1;
       }
+      table.find('.current-page').html( page );
+
       var limit = table.attr('data-limit');
       if(!limit) {
         limit = 30;
