@@ -142,6 +142,7 @@ $(function() {
       }
 
       empty.hide();
+      error.hide();
       loading.show();
       tbody.empty();
 
@@ -170,9 +171,7 @@ $(function() {
         } else {
           empty.show();
         }
-        if(error) {
-          error.hide();
-        }
+        error.hide();
         table.find('[data-ajax-html]').each(function(e, obj) {
           var $obj = $(obj);
           var code = $obj.attr('data-ajax-html').replace('[[','').replace(']]', '');
@@ -185,9 +184,7 @@ $(function() {
       q.on('fail', function(e) {
         loading.hide();
         empty.hide();
-        if(error) {
-          error.show();
-        }
+        error.show();
         table.find('[data-ajax-show]').each(function(e, obj) {
           var $obj = $(obj);
           $obj.html('-');

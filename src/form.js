@@ -24,13 +24,13 @@ $('body').on('submit','form.ajax', function(e) {
   // Form keys
   var formData = form.serializeArray();
   var pushData = new FormData;
-  formData.each(function(e, row) {
+  formData.forEach(function(row) {
     pushData.append( row.name, row.value );
     // pushData[ row.name ] = row.value;
   });
   // Form files
   var file_inputs = form.find('input[type="file"][name]');
-  file_inputs.each(function(pos, file_input) {
+  file_inputs.forEach(function(pos, file_input) {
     var name = $(file_input).attr('name');
     pushData.append( name, file_input.files[0] );
   });
