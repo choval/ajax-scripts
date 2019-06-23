@@ -170,6 +170,9 @@ $(function() {
         } else {
           empty.show();
         }
+        if(error) {
+          error.hide();
+        }
         table.find('[data-ajax-html]').each(function(e, obj) {
           var $obj = $(obj);
           var code = $obj.attr('data-ajax-html').replace('[[','').replace(']]', '');
