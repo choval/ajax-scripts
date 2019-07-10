@@ -219,8 +219,9 @@ $(function() {
     $obj.find('.prev-page').off('click');
     $obj.find('.filter').off('keyup change');
     $obj.find('.sort').off('keyup change');
+    $obj.find('.match').off('keyup change');
     if(id) {
-      $obj.find('.match[data-target="#'+id+'"]').off('keyup change');
+      $('.match[data-target="#'+id+'"]').off('keyup change');
     }
 
     $obj.find('.next-page').on('click', function(e) {
@@ -257,16 +258,34 @@ $(function() {
     }
     $obj.find('.filter').on('keyup change', function(e) {
       clearTimeout($obj.data('keytimer'));
-      $obj.data('keytimer', setTimeout(function() {
-        obj.ajaxTable();
-      }, filter_timeout) );
+      if(e.keyCode == 13) {
+        $obj.ajaxTable();
+      } else {
+        $obj.data('keytimer', setTimeout(function() {
+          $obj.ajaxTable();
+        }, filter_timeout) );
+      }
+    });
+    $obj.find('.match').on('keyup change', function(e) {
+      clearTimeout($obj.data('keytimer'));
+      if(e.keyCode == 13) {
+        $obj.ajaxTable();
+      } else {
+        $obj.data('keytimer', setTimeout(function() {
+          $obj.ajaxTable();
+        }, filter_timeout) );
+      }
     });
     if(id) {
-      $obj.find('.match[data-target="#'+id+'"]').on('keyup change', function(e) {
+      $('.match[data-target="#'+id+'"]').on('keyup change', function(e) {
         clearTimeout($obj.data('keytimer'));
-        $obj.data('keytimer', setTimeout(function() {
-          obj.ajaxTable();
-        }, filter_timeout) );
+        if(e.keyCode == 13) {
+          $obj.ajaxTable();
+        } else {
+          $obj.data('keytimer', setTimeout(function() {
+            $obj.ajaxTable();
+          }, filter_timeout) );
+        }
       });
     }
 
