@@ -256,7 +256,17 @@ $(function() {
     if(!filter_timeout) {
       filter_timeout = 300;
     }
+    var lastFilter = false;
     $obj.find('.filter').on('keyup change', function(e) {
+      var filter = [];
+      $obj.find('.filter').each(function(e, obj) {
+        var val = $(obj).val();
+        filter.push(val);
+      });
+      filter = JSON.stringify(filter);
+      if(lastFilter == filter) {
+        return;
+      }
       clearTimeout($obj.data('keytimer'));
       if(e.keyCode == 13) {
         $obj.ajaxTable();
@@ -266,7 +276,17 @@ $(function() {
         }, filter_timeout) );
       }
     });
+    var lastMatch = false;
     $obj.find('.match').on('keyup change', function(e) {
+      var filter = [];
+      $obj.find('.match').each(function(e, obj) {
+        var val = $(obj).val();
+        filter.push(val);
+      });
+      filter = JSON.stringify(filter);
+      if(lastFilter == filter) {
+        return;
+      }
       clearTimeout($obj.data('keytimer'));
       if(e.keyCode == 13) {
         $obj.ajaxTable();
@@ -278,6 +298,15 @@ $(function() {
     });
     if(id) {
       $('.match[data-target="#'+id+'"]').on('keyup change', function(e) {
+        var filter = [];
+        $('.match[data-target="#'+id+'"]').each(function(e, obj) {
+          var val = $(obj).val();
+          filter.push(val);
+        });
+        filter = JSON.stringify(filter);
+        if(lastFilter == filter) {
+          return;
+        }
         clearTimeout($obj.data('keytimer'));
         if(e.keyCode == 13) {
           $obj.ajaxTable();
