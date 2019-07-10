@@ -212,10 +212,16 @@ $(function() {
   $('table.ajax[data-source],div.ajax[data-source]').each(function(e,obj) {
     var $obj = $(obj);
     $obj.ajaxTable();
+
+    var id = $obj.attr('id');
     
     $obj.find('.next-page').off('click');
     $obj.find('.prev-page').off('click');
     $obj.find('.filter').off('keyup change');
+    $obj.find('.sort').off('keyup change');
+    if(id) {
+      $obj.find('.match[data-target="#'+id+'"]').off('keyup change');
+    }
 
     $obj.find('.next-page').on('click', function(e) {
       var $table = $obj;
@@ -255,6 +261,14 @@ $(function() {
         obj.ajaxTable();
       }, filter_timeout) );
     });
+    if(id) {
+      $obj.find('.match[data-target="#'+id+'"]').on('keyup change', function(e) {
+        clearTimeout($obj.data('keytimer'));
+        $obj.data('keytimer', setTimeout(function() {
+          obj.ajaxTable();
+        }, filter_timeout) );
+      });
+    }
 
   });
 
