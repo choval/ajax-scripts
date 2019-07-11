@@ -267,6 +267,7 @@ $(function() {
       if(lastFilter == filter) {
         return;
       }
+      lastFilter = filter;
       clearTimeout($obj.data('keytimer'));
       if(e.keyCode == 13) {
         $obj.ajaxTable();
@@ -284,9 +285,10 @@ $(function() {
         filter.push(val);
       });
       filter = JSON.stringify(filter);
-      if(lastFilter == filter) {
+      if(lastMatch == filter) {
         return;
       }
+      lastMatch = filter;
       clearTimeout($obj.data('keytimer'));
       if(e.keyCode == 13) {
         $obj.ajaxTable();
