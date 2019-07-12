@@ -10,6 +10,11 @@ $(function() {
       }
       var table = $(this);
       clearTimeout( table.data('timer') );
+      var prev_query = table.data('query');
+      if(prev_query) {
+        prev_query.abort();
+      }
+
       var source = table.attr('data-source');
       if(!source) {
         return;
@@ -108,6 +113,7 @@ $(function() {
       request.match = match;
       request.sort = sort;
       var q = new Query( source, request );
+      table.data('query', q);
 
       if( table.data('template') ) {
         var template = table.data('template');
@@ -309,6 +315,7 @@ $(function() {
         if(lastMatch == filter) {
           return;
         }
+        lastMatch = filter;
         clearTimeout($obj.data('keytimer'));
         if(e.keyCode == 13) {
           $obj.ajaxTable();

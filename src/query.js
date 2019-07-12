@@ -34,7 +34,16 @@ class Query {
     });
   }
 
+  abort() {
+    if(this.ajax) {
+      this.ajax.abort();
+    }
+  }
+
   stop() {
+    if(this.ajax) {
+      this.ajax.abort();
+    }
     clearInterval( this.timer );
     this.frequency = false;
   }
@@ -94,7 +103,7 @@ class Query {
         },
       };
     }
-    $.ajax(opts)
+    this.ajax = $.ajax(opts)
     .done(function(res) {
       var ev = new CustomEvent('done', {
         detail: {
