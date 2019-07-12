@@ -260,7 +260,7 @@ $(function() {
     $obj.find('.filter').on('keyup change', function(e) {
       var filter = [];
       $obj.find('.filter').each(function(e, obj) {
-        var val = $(obj).val();
+        var val = $(obj).val().trim();
         filter.push(val);
       });
       filter = JSON.stringify(filter);
@@ -281,7 +281,7 @@ $(function() {
     $obj.find('.match').on('keyup change', function(e) {
       var filter = [];
       $obj.find('.match').each(function(e, obj) {
-        var val = $(obj).val();
+        var val = $(obj).val().trim();
         filter.push(val);
       });
       filter = JSON.stringify(filter);
@@ -302,11 +302,11 @@ $(function() {
       $('.match[data-target="#'+id+'"]').on('keyup change', function(e) {
         var filter = [];
         $('.match[data-target="#'+id+'"]').each(function(e, obj) {
-          var val = $(obj).val();
+          var val = $(obj).val().trim();
           filter.push(val);
         });
         filter = JSON.stringify(filter);
-        if(lastFilter == filter) {
+        if(lastMatch == filter) {
           return;
         }
         clearTimeout($obj.data('keytimer'));
