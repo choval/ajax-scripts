@@ -123,7 +123,7 @@ $(function() {
       }
 
       if(template) {
-        var template_fields = template.match(/\[\[(.+)\]\]/g);
+        var template_fields = template.match(/\[\[(.+?)\]\]/g);
         if(!template_fields) {
           template_fields = [];
           /**
