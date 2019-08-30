@@ -23,17 +23,22 @@ $('body').on('submit','form.ajax', function(e) {
 
   // Form keys
   var formData = form.serializeArray();
-  var pushData = new FormData;
-  formData.forEach(function(row) {
-    pushData.append( row.name, row.value );
-    // pushData[ row.name ] = row.value;
-  });
-  // Form files
-  var file_inputs = form.find('input[type="file"][name]');
-  file_inputs.each(function(pos, file_input) {
-    var name = $(file_input).attr('name');
-    pushData.append( name, file_input.files[0] );
-  });
+  var method = form.attr('method');
+  if(method == 'GET') {
+    var pushData = formData;
+  } else {
+    var pushData = new FormData;
+    formData.forEach(function(row) {
+      pushData.append( row.name, row.value );
+      // pushData[ row.name ] = row.value;
+    });
+    // Form files
+    var file_inputs = form.find('input[type="file"][name]');
+    file_inputs.each(function(pos, file_input) {
+      var name = $(file_input).attr('name');
+      pushData.append( name, file_input.files[0] );
+    });
+  }
 
   var url = form.attr('action') ? form.attr('action') : window.location.href;
   var formError = form.find('.form-error');
@@ -89,7 +94,7 @@ $('body').on('submit','form.ajax', function(e) {
     }, 1000);
   });
 
-  q.fetch( form.attr('method') );
+  q.fetch( method );
 
 
 });
