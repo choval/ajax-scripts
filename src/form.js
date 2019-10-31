@@ -53,10 +53,10 @@ $('body').on('submit','form.ajax', function(e) {
   }
 
   var q = new Query(url, pushData);
-  q.on('fail', function(e) {
-    form.trigger('fail', e);
-    var res = e.detail.event;
-    var error = res.responseJSON ? res.responseJSON.error : 'An error has ocurred';
+  q.on('fail', function(ev, statusMessage) {
+    form.trigger('fail', ev);
+    var res = ev.detail.req;
+    var error = (typeof res.responseJSON != 'undefined') ? res.responseJSON.error : 'An error has ocurred';
     if(typeof error == 'object') {
       error = error.message;  
     }
