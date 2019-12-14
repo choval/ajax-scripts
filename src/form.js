@@ -60,9 +60,14 @@ $('body').on('submit','form.ajax', function(e) {
 
     var q = new Query(url, pushData);
     q.on('fail', function(ev, statusMessage) {
-        form.trigger('fail', ev);
         var res = ev.detail.req;
-        var error = (typeof res.responseJSON != 'undefined') ? res.responseJSON.error : 'An error has ocurred';
+        var error = res.responseText;
+        if (typeof res.responseJSON != 'undefined') {
+            form.trigger('fail', res.responseJSON, res.statusText);
+            error = ( res.responseJSON.error != 'undefined' ) ? res.responseJSON.error : 'An error has ocurred';
+        } else {
+            form.trigger('fail', res.responseText, res.statusText);
+        }
         if(typeof error == 'object') {
             error = error.message;    
         }
