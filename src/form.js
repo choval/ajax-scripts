@@ -74,7 +74,7 @@ $('body').on('submit','form.ajax', function(e) {
         }
         // Show the error
         var error = res.statusText;
-        if (isJSON) {
+        if (isJson) {
             if (typeof res.responseJSON.error == 'string') {
                 error = res.responseJSON.error;
             } else if (typeof res.responseJSON.error == 'object' && typeof res.responseJSON.error.message == 'string') {
@@ -109,6 +109,7 @@ $('body').on('submit','form.ajax', function(e) {
     q.on('done', function(e) {
         res = e.detail.response;
         form.trigger('done', res);
+        var isJson = (typeof res.responseJSON != 'undefined') ? true : false;
         // Handles new CSRF
         if (isJson && typeof res.responseJSON.csrf == 'string') {
             form.find('[name="csrf"]').val(res.responseJSON.csrf);
