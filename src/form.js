@@ -60,15 +60,20 @@ $('body').on('submit','form.ajax', function(e) {
 
     var q = new Query(url, pushData);
     q.on('fail', function(ev, statusMessage) {
-        form.trigger('fail', ev);
         var res = ev.detail.req;
         var isJson = (typeof res.responseJSON != 'undefined') ? true : false;
+        // Trigger
+        if (isJson) {
+            form.trigger('fail', res.responseJSON, res.statusText);
+        } else {
+            form.trigger('fail', res.responseText, res.statusText);
+        }
         // Handles new CSRF
         if (isJson && typeof res.responseJSON.csrf == 'string') {
             form.find('[name="csrf"]').val(res.responseJSON.csrf);
         }
         // Show the error
-        var error = statusMessage;
+        var error = res.statusText;
         if (isJSON) {
             if (typeof res.responseJSON.error == 'string') {
                 error = res.responseJSON.error;
