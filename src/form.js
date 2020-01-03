@@ -62,33 +62,78 @@ $('body').on('submit','form.ajax', function(e) {
     q.on('fail', function(ev, statusMessage) {
         form.trigger('fail', ev);
         var res = ev.detail.req;
-        var error = (typeof res.responseJSON != 'undefined') ? res.responseJSON.error : 'An error has ocurred';
-        if(typeof error == 'object') {
-            error = error.message;    
+        var isJson = (typeof res.responseJSON != 'undefined') ? true : false;
+        // Handles new CSRF
+        if (isJson && typeof res.responseJSON.csrf == 'string') {
+            form.find('[name="csrf"]').val(res.responseJSON.csrf);
+        }
+        // Show the error
+        var error = statusMessage;
+        if (isJSON) {
+            if (typeof res.responseJSON.error == 'string') {
+                error = res.responseJSON.error;
+            } else if (typeof res.responseJSON.error == 'object' && typeof res.responseJSON.error.message == 'string') {
+                error = res.responseJSON.error.message;
+            } else if (typeof res.responseJSON.error_message == 'string') {
+                error = res.responseJSON.error_message;
+            }
+        } else {
+            if (typeof res.responseText == 'string') {
+                error = res.responseText;
+            }
         }
         var formError = form.find('.form-error');
         if(formError) {
             clearTimeout( formError.data('timer') );
-            if(formError.hasClass('form-error-slide')) {
+            if(formError.hasClass('form-slide')) {
                 formError.html( error ).slideDown();
             } else {
                 formError.html( error ).show();
             }
             formError.data('timer', setTimeout(function() {
-                if(formError.hasClass('form-error-slide')) {
+                if(formError.hasClass('form-slide')) {
                     formError.slideUp();
                 } else {
                     formError.hide();
                 }
             },5000));
+        } else {
+            alert(error);
         }
     });
     q.on('done', function(e) {
         res = e.detail.response;
         form.trigger('done', res);
-        if(res.location) {
-            window.location = res.location;
-        } 
+        // Handles new CSRF
+        if (isJson && typeof res.responseJSON.csrf == 'string') {
+            form.find('[name="csrf"]').val(res.responseJSON.csrf);
+        }
+
+        var formSuccess = form.find('.form-success');
+        if(formSuccess) {
+            clearTimeout( formSuccess.data('timer') );
+            if(formSuccess.hasClass('form-slide')) {
+                formSuccess.slideDown();
+            } else {
+                formSuccess.show();
+            }
+            formSuccess.data('timer', setTimeout(function() {
+                if(formSuccess.hasClass('form-slide')) {
+                    formSuccess.slideUp();
+                } else {
+                    formSuccess.hide();
+                }
+                // Handles redirect
+                if(res.location) {
+                    window.location = res.location;
+                } 
+            },5000));
+        } else {
+            // Handles redirect
+            if(res.location) {
+                window.location = res.location;
+            } 
+        }
     });
     q.on('end', function() { 
         form.trigger('end');
