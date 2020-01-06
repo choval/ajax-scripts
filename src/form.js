@@ -30,6 +30,7 @@ $('body').on('submit','form.ajax', function(e) {
     // Form keys
     var formData = form.serializeArray();
     var method = form.attr('method');
+    var formMessageTimeout = 2000;
     if(method == 'GET') {
         var pushData = formData;
     } else {
@@ -101,7 +102,7 @@ $('body').on('submit','form.ajax', function(e) {
                 } else {
                     formError.hide();
                 }
-            },5000));
+            },formMessageTimeout));
         } else {
             alert(error);
         }
@@ -133,7 +134,7 @@ $('body').on('submit','form.ajax', function(e) {
                 if(res.location) {
                     window.location = res.location;
                 } 
-            },5000));
+            },formMessageTimeout));
         } else {
             // Handles redirect
             if(res.location) {
@@ -154,7 +155,7 @@ $('body').on('submit','form.ajax', function(e) {
             if(typeof feather !== 'undefined') {
                 feather.replace();
             }
-        }, 5000);
+        }, formMessageTimeout);
     });
 
     q.fetch( method );
