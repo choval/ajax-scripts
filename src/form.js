@@ -154,7 +154,7 @@ $('body').on('submit','form.ajax', function(e) {
             if(typeof feather !== 'undefined') {
                 feather.replace();
             }
-        }, 1000);
+        }, 5000);
     });
 
     q.fetch( method );
