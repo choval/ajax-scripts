@@ -49,14 +49,18 @@ $('body').on('submit','form.ajax', function(e) {
 
     var url = form.attr('action') ? form.attr('action') : window.location.href;
     var formError = form.find('.form-error');
+    var formLoading = form.find('.form-loading');
 
-    if(formError) {
+    if (formError) {
         clearTimeout( formError.data('timer') );
         if(formError.hasClass('form-error-slide')) {
             formError.slideUp();
         } else {
             formError.hide();
         }
+    }
+    if (formLoading) {
+        formLoading.show();
     }
 
     var q = new Query(url, pushData);
@@ -143,6 +147,9 @@ $('body').on('submit','form.ajax', function(e) {
         }
     });
     q.on('end', function() { 
+        if (formLoading) {
+            formLoading.hide();
+        }
         form.trigger('end');
         setTimeout(function() {
             submitButtons.each(function(i, btn) {
