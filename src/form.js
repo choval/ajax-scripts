@@ -30,7 +30,7 @@ $('body').on('submit','form.ajax', function(e) {
     // Form keys
     var formData = form.serializeArray();
     var method = form.attr('method');
-    var formMessageTimeout = 2000;
+    var formMessageTimeout = form.attr('data-message-timeout') ? form.attr('data-message-timeout') : 2000;
     if(method == 'GET') {
         var pushData = formData;
     } else {
