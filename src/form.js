@@ -43,7 +43,7 @@ $('body').on('submit','form.ajax', function(e) {
         var file_inputs = form.find('input[type="file"][name]');
         file_inputs.each(function(pos, file_input) {
             var obj = $(file_input);
-            if (!obj.prop('disabled')) {
+            if (!obj.prop('disabled') && file_input.files.length) {
                 var name = obj.attr('name');
                 pushData.append( name, file_input.files[0] );
             }
