@@ -42,8 +42,11 @@ $('body').on('submit','form.ajax', function(e) {
         // Form files
         var file_inputs = form.find('input[type="file"][name]');
         file_inputs.each(function(pos, file_input) {
-            var name = $(file_input).attr('name');
-            pushData.append( name, file_input.files[0] );
+            var obj = $(file_input);
+            if (!obj.prop('disabled')) {
+                var name = obj.attr('name');
+                pushData.append( name, file_input.files[0] );
+            }
         });
     }
 
