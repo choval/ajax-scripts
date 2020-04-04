@@ -264,12 +264,23 @@ $(function() {
         
         $obj.find('.next-page').off('click');
         $obj.find('.prev-page').off('click');
+        $obj.find('.jump-page').off('click');
         $obj.find('.filter').off('keyup change');
         $obj.find('.sort').off('keyup change');
         $obj.find('.match').off('keyup change');
         if(id) {
             $('.match[data-target="#'+id+'"]').off('keyup change');
         }
+
+        $obj.find('.jump-page').on('click', function(e) {
+            var $table = $obj;
+            var page = $(this).attr('data-page');
+            if (!page) {
+                page = $(this).text().trim();
+            }
+            $table.attr('data-page', page);
+            $table.ajaxTable();
+        });
 
         $obj.find('.next-page').on('click', function(e) {
             var $table = $obj;
