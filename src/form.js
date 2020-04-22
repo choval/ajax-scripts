@@ -159,8 +159,10 @@ $('body').on('submit','form.ajax', function(e) {
                 var obj = $(btn);
                 obj.prop('disabled', false);
                 var orig = obj.data('original_content');
-                obj.html( orig );
-                obj.data('original_content', false);
+                if (orig) {
+                    obj.html( orig );
+                    obj.data('original_content', false);
+                }
             });
             if(typeof feather !== 'undefined') {
                 feather.replace();
