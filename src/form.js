@@ -14,6 +14,7 @@ $('body').on('submit','form.ajax', function(e) {
     e.stopPropagation();
     var form = $(e.target);
     var submitButtons = form.find('[type="submit"]');
+    var defaultLoadingText = $('#default-loading-text').html();
     submitButtons.each(function(i, btn) {
         var obj = $(btn);
         obj.data('original_content', obj.html() );
@@ -21,6 +22,8 @@ $('body').on('submit','form.ajax', function(e) {
         var loadingText = obj.attr('data-loading-text');
         if (loadingText) {
             obj.html( loadingText );
+        } else if (defaultLoadingText) {
+            obj.html( defaultLoadingText );
         }
     });
     if(typeof feather !== 'undefined') {
