@@ -35,7 +35,9 @@ class Query {
     }
 
     abort() {
-        if(this.ajax) {
+        if(this.ajax
+            && this.ajax.readyState > 0
+            && this.ajax.readyState != 4) {
             this.ajax.abort();
         }
     }
