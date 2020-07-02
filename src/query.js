@@ -35,9 +35,9 @@ class Query {
     }
 
     abort() {
-        if(this.ajax
-            && this.ajax.readyState > 0
-            && this.ajax.readyState != 4) {
+        if(this.ajax &&
+            this.ajax.readyState > 0 &&
+            this.ajax.readyState != 4) {
             this.ajax.abort();
         }
     }
@@ -74,6 +74,7 @@ class Query {
 
     fetch(method, data) {
         var par = this;
+        var opts = {};
         if(!method) {
             method = 'GET';
         }
@@ -81,10 +82,11 @@ class Query {
             data = par.data;
         }
         if(data instanceof FormData) {
-            var opts = {
+            opts = {
                 method: method,
                 url: par.path,
                 headers: par.headers,
+                async: true,
                 data: data,
                 cache: false,
                 contentType: false,
@@ -94,10 +96,11 @@ class Query {
                 },
             };
         } else {
-            var opts = {
+            opts = {
                 method: method,
                 url: par.path,
                 headers: par.headers,
+                async: true,
                 data: data,
                 cache: false,
                 xhrFields: {

@@ -202,7 +202,7 @@ $(function() {
                         max: max_page,
                     };
                     var mid = (page < 6) ? 0 : Math.round(page / 2);
-                    for (var i=1;i<=10;i++) {
+                    for (var i=1; i<=10; i++) {
                         var p = {
                             page: i+mid,
                             active: false,
@@ -272,7 +272,7 @@ $(function() {
             $('.match[data-target="#'+id+'"]').off('keyup change');
         }
 
-        $obj.find('.jump-page').on('click', function(e) {
+        $obj.find('.jump-page').on('click', function() {
             var $table = $obj;
             var page = $(this).attr('data-page');
             if (!page) {
@@ -282,7 +282,7 @@ $(function() {
             $table.ajaxTable();
         });
 
-        $obj.find('.next-page').on('click', function(e) {
+        $obj.find('.next-page').on('click', function() {
             var $table = $obj;
             var page = $table.attr('data-page');
             if(!page) {
@@ -297,7 +297,7 @@ $(function() {
             }
         });
 
-        $obj.find('.prev-page').on('click', function(e) {
+        $obj.find('.prev-page').on('click', function() {
             var $table = $obj;
             var page = $table.attr('data-page');
             if(!page) {

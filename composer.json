@@ -2,6 +2,6 @@
     "name": "choval/ajax-scripts",
     "description": "A set of javascript scripts",
     "type": "library",
-    "license": "Private",
+    "license": "MIT",
     "require": {}
 }
