@@ -240,7 +240,7 @@ $(function() {
                     error.find('p').empty().append(msg);
                 }
                 error.show();
-                table.find('[data-ajax-show]').each(function(e, obj) {
+                table.find('[data-ajax-html]').each(function(e, obj) {
                     var $obj = $(obj);
                     $obj.html('-');
                 });
