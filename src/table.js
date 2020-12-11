@@ -230,6 +230,12 @@ $(function() {
                 if (e.detail.error) {
                     msg = e.detail.error;
                 }
+
+                var response = e.detail.req.responseJSON || e.detail.req.responseText;
+                if (typeof response.error.message != 'undefined') {
+                    msg = response.error.message;
+                }
+
                 if (error.find('p').length) {
                     error.find('p').empty().append(msg);
                 }
@@ -238,6 +244,8 @@ $(function() {
                     var $obj = $(obj);
                     $obj.html('-');
                 });
+
+                table.trigger('table_failed', response, e.detail.req.status);
             });
 
             // Run
