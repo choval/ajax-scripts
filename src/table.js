@@ -245,7 +245,7 @@ $(function() {
                     $obj.html('-');
                 });
 
-                table.trigger('table_failed', response, e.detail.req.status);
+                table.trigger('table_failed', [response, e.detail.req.status]);
             });
 
             // Run
