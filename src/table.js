@@ -232,7 +232,7 @@ $(function() {
                 }
 
                 var response = e.detail.req.responseJSON || e.detail.req.responseText;
-                if (typeof response.error.message != 'undefined') {
+                if (response && typeof response.error.message != 'undefined') {
                     msg = response.error.message;
                 }
 
