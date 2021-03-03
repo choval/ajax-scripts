@@ -1,7 +1,0 @@
-{
-    "name": "choval/ajax-scripts",
-    "description": "A set of javascript scripts",
-    "type": "library",
-    "license": "MIT",
-    "require": {}
-}
