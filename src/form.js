@@ -1,9 +1,6 @@
 
 $(function() {
 
-
-
-
 /*
 --------------------------------------------------------
 AJAX FORM HANDLING
@@ -31,28 +28,7 @@ $('body').on('submit','form.ajax', function(e) {
     }
 
     // Form keys
-    var formData = form.serializeArray();
-    var method = form.attr('method');
-    var formMessageTimeout = form.attr('data-message-timeout') ? form.attr('data-message-timeout') : 2000;
-    if(method == 'GET') {
-        var pushData = formData;
-    } else {
-        var pushData = new FormData;
-        formData.forEach(function(row) {
-            pushData.append( row.name, row.value );
-            // pushData[ row.name ] = row.value;
-        });
-        // Form files
-        var file_inputs = form.find('input[type="file"][name]');
-        file_inputs.each(function(pos, file_input) {
-            var obj = $(file_input);
-            if (!obj.prop('disabled') && file_input.files.length) {
-                var name = obj.attr('name');
-                pushData.append( name, file_input.files[0] );
-            }
-        });
-    }
-
+    var formData = new FormData(form[0]);
     var url = form.attr('action') ? form.attr('action') : window.location.href;
     var formError = form.find('.form-error');
     var formLoading = form.find('.form-loading');
@@ -69,7 +45,7 @@ $('body').on('submit','form.ajax', function(e) {
         formLoading.show();
     }
 
-    var q = new Query(url, pushData);
+    var q = new Query(url, formData);
     q.on('fail', function(ev, statusMessage) {
         var res = ev.detail.req;
         var isJson = (typeof res.responseJSON != 'undefined') ? true : false;
@@ -174,13 +150,7 @@ $('body').on('submit','form.ajax', function(e) {
     });
 
     q.fetch( method );
-
-
 });
-
-
-
-
 
 });
 

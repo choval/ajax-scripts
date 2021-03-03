@@ -1,4 +1,4 @@
-
+import $ from 'jquery';
 
 function QueryEventTarget(){
     var target = document.createTextNode(null);
@@ -46,7 +46,7 @@ class Query {
         if(this.ajax) {
             this.ajax.abort();
         }
-        clearInterval( this.timer );
+        window.clearInterval( this.timer );
         this.frequency = false;
     }
 
@@ -55,15 +55,15 @@ class Query {
     }
 
     pause() {
-        clearInterval( this.timer );
+        window.clearInterval( this.timer );
     }
 
     resume() {
-        clearInterval( this.timer );
+        window.clearInterval( this.timer );
         var par = this;
         par.fetch();
         if(par.frequency) {
-            par.timer = setInterval(function() { par.fetch(); }, par.frequency );
+            par.timer = window.setInterval(function() { par.fetch(); }, par.frequency );
         }
     }
 
@@ -92,7 +92,7 @@ class Query {
                 contentType: false,
                 processData: false,
                 xhrFields: {
-                    withCredentials: true
+                    // withCredentials: true
                 },
             };
         } else {
@@ -104,7 +104,7 @@ class Query {
                 data: data,
                 cache: false,
                 xhrFields: {
-                    withCredentials: true
+                    // withCredentials: true
                 },
             };
         }
@@ -166,5 +166,5 @@ class Query {
 
 }
 
-
+export {Query};
 
