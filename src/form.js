@@ -33,6 +33,7 @@ $('body').on('submit','form.ajax', function(e) {
     var formError = form.find('.form-error');
     var formLoading = form.find('.form-loading');
     var method = form.attr('method') || 'POST';
+    var formMessageTimeout = form.attr('data-message-timeout') || 2000;
 
     if (formError) {
         clearTimeout( formError.data('timer') );
