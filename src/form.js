@@ -118,6 +118,15 @@ $('body').on('submit','form.ajax', function(e) {
                 } else {
                     formSuccess.hide();
                 }
+                if (res.cookie) {
+                    if (typeof res.cookie == "string") {
+                        document.cookie = res.cookie;
+                    } else {
+                        for (let cookie of res.cookie) {
+                            document.cookie = cookie;
+                        }
+                    }
+                }
                 // Handles redirect
                 if(res.location) {
                     window.location = res.location;
