@@ -1,4 +1,3 @@
-import $ from 'jquery';
 
 function QueryEventTarget(){
     var target = document.createTextNode(null);
@@ -165,6 +164,4 @@ class Query {
     }
 
 }
-
-export {Query};
 
