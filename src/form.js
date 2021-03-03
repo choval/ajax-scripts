@@ -29,9 +29,10 @@ $('body').on('submit','form.ajax', function(e) {
 
     // Form keys
     var formData = new FormData(form[0]);
-    var url = form.attr('action') ? form.attr('action') : window.location.href;
+    var url = form.attr('action') || window.location.href;
     var formError = form.find('.form-error');
     var formLoading = form.find('.form-loading');
+    var method = form.attr('method') || 'POST';
 
     if (formError) {
         clearTimeout( formError.data('timer') );
