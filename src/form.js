@@ -52,7 +52,7 @@ $('body').on('submit','form.ajax', function(e) {
         const asString = data
           .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
           .join('&');
-        if (url.indexOf('?')) {
+        if (url.indexOf('?') > 1) {
             url += '&'+asString;
         } else {
             url += '?'+asString;
