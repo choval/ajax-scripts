@@ -47,7 +47,20 @@ $('body').on('submit','form.ajax', function(e) {
         formLoading.show();
     }
 
-    var q = new Query(url, formData);
+    if (method == 'GET') {
+        const data = [...formData.entries()];
+        const asString = data
+          .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+          .join('&');
+        if (url.indexOf('?')) {
+            url += '&'+asString;
+        } else {
+            url += '?'+asString;
+        }
+        var q = new Query(url);
+    } else {
+        var q = new Query(url, formData);
+    }
     q.on('fail', function(ev, statusMessage) {
         var res = ev.detail.req;
         var isJson = (typeof res.responseJSON != 'undefined') ? true : false;
